@@ -30,7 +30,7 @@ export function ServiceEditorRow({ service }: { service: Service }) {
   }
 
   return (
-    <div className="border border-line p-6">
+    <div className="card p-6">
       <p className="font-display text-lg">{service.title}</p>
       <textarea
         rows={3}

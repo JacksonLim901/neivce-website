@@ -52,13 +52,13 @@ export default async function HomePage() {
       <Reveal>
         <section className="mx-auto max-w-6xl px-6 py-20 md:py-28">
           <h2 className="text-h2 font-display">What we do</h2>
-          <div className="mt-12 divide-y divide-line border-t border-line">
+          <div className="mt-12 border-t border-line">
             {services.map((service) => (
               <div
                 key={service.id}
-                className="grid gap-2 py-8 md:grid-cols-[80px_1fr_1.4fr] md:items-baseline md:gap-8"
+                className="group grid gap-2 border-b border-line py-8 pl-0 transition-all duration-200 ease-out hover:bg-surface hover:pl-4 md:grid-cols-[80px_1fr_1.4fr] md:items-baseline md:gap-8"
               >
-                <span className="font-display text-sm text-muted">
+                <span className="font-display text-sm text-muted transition-colors group-hover:text-accent">
                   {String(service.display_order).padStart(2, "0")}
                 </span>
                 <h3 className="font-display text-lg">{service.title}</h3>
@@ -97,7 +97,7 @@ export default async function HomePage() {
               </LinkButton>
             </div>
           </div>
-          <div className="border border-line bg-surface p-6">
+          <div className="card p-6">
             <p className="text-muted">{settings.address}</p>
             <p className="mt-3 text-muted">{settings.phone}</p>
           </div>
