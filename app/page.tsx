@@ -1,81 +1,108 @@
 import { LinkButton } from "@/components/ui/Button";
+import { HeroVisual } from "@/components/sections/HeroVisual";
+import { Reveal } from "@/components/ui/Reveal";
+import { getServices, getSiteSettings } from "@/lib/supabase/queries";
 
-const highlights = [
-  {
-    title: "E-commerce",
-    description: "Helping businesses sell online with reliable, easy-to-manage storefronts.",
-  },
-  {
-    title: "Programming Services",
-    description: "Custom software and web development built around real business needs.",
-  },
-  {
-    title: "Computer Training",
-    description: "Practical computing skills training for individuals and organisations.",
-  },
-];
+// Always fetch fresh data so admin edits show up immediately.
+export const dynamic = "force-dynamic";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const [settings, services] = await Promise.all([
+    getSiteSettings(),
+    getServices(),
+  ]);
+
   return (
     <div>
-      {/* 1. Hero */}
-      <section className="border-b border-line">
-        <div className="mx-auto max-w-6xl px-6 py-24">
-          <p className="text-sm uppercase tracking-widest text-muted">NEIVCE Trading PLT</p>
-          <h1 className="mt-4 max-w-2xl font-display text-4xl leading-tight md:text-5xl">
-            Practical technology, delivered with care.
-          </h1>
-          <p className="mt-6 max-w-xl text-muted">
-            [PLACEHOLDER — company introduction will be pulled from the admin
-            panel once connected to the database.]
-          </p>
-          <div className="mt-8 flex gap-4">
-            <LinkButton href="/services">Explore Services</LinkButton>
-            <LinkButton href="/contact" variant="ghost">
-              Contact Us
-            </LinkButton>
+      {/* Hero — asymmetric left text / right visual */}
+      <section className="bg-dot-grid border-b border-line">
+        <div className="mx-auto grid max-w-7xl items-center gap-12 px-6 py-20 md:grid-cols-2 md:py-32">
+          <div>
+            <p className="text-eyebrow text-muted">{settings.company_name}</p>
+            <h1 className="text-display mt-4 font-display">
+              Practical technology, delivered with care.
+            </h1>
+            <p className="mt-6 max-w-md text-lg text-muted">
+              {settings.introduction}
+            </p>
+            <div className="mt-8 flex gap-4">
+              <LinkButton href="/services">Explore Services</LinkButton>
+              <LinkButton href="/contact" variant="ghost">
+                Contact Us
+              </LinkButton>
+            </div>
+          </div>
+
+          <div className="hidden h-[380px] md:block">
+            <HeroVisual />
           </div>
         </div>
       </section>
 
-      {/* 2 & 3. Introduction + business highlights */}
-      <section className="mx-auto max-w-6xl px-6 py-20">
-        <h2 className="font-display text-2xl">What we do</h2>
-        <div className="mt-10 grid gap-8 md:grid-cols-3">
-          {highlights.map((item, i) => (
-            <div key={item.title} className="border border-line p-6">
-              <span className="text-sm text-muted">0{i + 1}</span>
-              <h3 className="mt-3 font-display text-lg">{item.title}</h3>
-              <p className="mt-2 text-sm text-muted">{item.description}</p>
+      {/* Homepage announcement, only shown if one is set */}
+      {settings.announcement && (
+        <section className="border-b border-line bg-surface">
+          <div className="mx-auto max-w-6xl px-6 py-4 text-sm text-ink">
+            {settings.announcement}
+          </div>
+        </section>
+      )}
+
+      {/* Business highlights — horizontal numbered strip, not cards */}
+      <Reveal>
+        <section className="mx-auto max-w-6xl px-6 py-20 md:py-28">
+          <h2 className="text-h2 font-display">What we do</h2>
+          <div className="mt-12 divide-y divide-line border-t border-line">
+            {services.map((service) => (
+              <div
+                key={service.id}
+                className="grid gap-2 py-8 md:grid-cols-[80px_1fr_1.4fr] md:items-baseline md:gap-8"
+              >
+                <span className="font-display text-sm text-muted">
+                  {String(service.display_order).padStart(2, "0")}
+                </span>
+                <h3 className="font-display text-lg">{service.title}</h3>
+                <p className="text-sm text-muted">{service.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      </Reveal>
+
+      {/* Why choose NEIVCE */}
+      <Reveal>
+        <section className="bg-dot-grid-dark border-t border-line bg-ink text-paper">
+          <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
+            <h2 className="text-h2 font-display">Why choose NEIVCE</h2>
+            <p className="mt-4 max-w-xl text-paper/70">
+              [PLACEHOLDER — value proposition content to be finalised without
+              fabricated statistics, awards, or client claims.]
+            </p>
+          </div>
+        </section>
+      </Reveal>
+
+      {/* Trust / company info — asymmetric text + card */}
+      <Reveal>
+        <section className="mx-auto grid max-w-6xl gap-10 px-6 py-20 md:grid-cols-[1.2fr_1fr] md:py-28">
+          <div>
+            <h2 className="text-h2 font-display">Visit or reach us</h2>
+            <p className="mt-4 max-w-sm text-muted">
+              We&apos;re based in Kajang, Selangor — reach out for enquiries
+              about e-commerce, programming, or training.
+            </p>
+            <div className="mt-6">
+              <LinkButton href="/contact" variant="ghost">
+                Get in touch
+              </LinkButton>
             </div>
-          ))}
-        </div>
-      </section>
-
-      {/* 5. Why choose NEIVCE */}
-      <section className="border-t border-line bg-ink text-paper">
-        <div className="mx-auto max-w-6xl px-6 py-20">
-          <h2 className="font-display text-2xl">Why choose NEIVCE</h2>
-          <p className="mt-4 max-w-xl text-paper/70">
-            [PLACEHOLDER — value proposition content to be finalised without
-            fabricated statistics, awards, or client claims.]
-          </p>
-        </div>
-      </section>
-
-      {/* 6. Trust / company info */}
-      <section className="mx-auto max-w-6xl px-6 py-20">
-        <h2 className="font-display text-2xl">Visit or reach us</h2>
-        <p className="mt-4 text-muted">
-          B5 - B7, Block B, Jalan TKS 1, Taman Kajang Sentral, 43000 Kajang, Selangor
-        </p>
-        <p className="text-muted">03-8737 8770</p>
-        <div className="mt-6">
-          <LinkButton href="/contact" variant="ghost">
-            Get in touch
-          </LinkButton>
-        </div>
-      </section>
+          </div>
+          <div className="border border-line bg-surface p-6">
+            <p className="text-muted">{settings.address}</p>
+            <p className="mt-3 text-muted">{settings.phone}</p>
+          </div>
+        </section>
+      </Reveal>
     </div>
   );
 }

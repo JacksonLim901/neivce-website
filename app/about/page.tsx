@@ -1,81 +1,54 @@
-import { LinkButton } from "@/components/ui/Button";
-import { getServices, getSiteSettings } from "@/lib/supabase/queries";
+import { Reveal } from "@/components/ui/Reveal";
 
-// Always fetch fresh data so admin edits show up immediately.
-export const dynamic = "force-dynamic";
+const pillars = [
+  {
+    number: "01",
+    title: "What We Do",
+    body: "NEIVCE Trading PLT operates across three business activities: e-commerce, computer programming services, and computer training.",
+  },
+  {
+    number: "02",
+    title: "Mission",
+    body: "[PLACEHOLDER — mission statement to be finalised without fabricated claims.]",
+  },
+  {
+    number: "03",
+    title: "Vision",
+    body: "[PLACEHOLDER — vision statement to be finalised without fabricated claims.]",
+  },
+  {
+    number: "04",
+    title: "Values",
+    body: "[PLACEHOLDER — company values to be finalised without fabricated claims.]",
+  },
+];
 
-export default async function HomePage() {
-  const [settings, services] = await Promise.all([
-    getSiteSettings(),
-    getServices(),
-  ]);
-
+export default function AboutPage() {
   return (
-    <div>
-      {/* 1. Hero */}
-      <section className="border-b border-line">
-        <div className="mx-auto max-w-6xl px-6 py-24">
-          <p className="text-sm uppercase tracking-widest text-muted">
-            {settings.company_name}
-          </p>
-          <h1 className="mt-4 max-w-2xl font-display text-4xl leading-tight md:text-5xl">
-            Practical technology, delivered with care.
-          </h1>
-          <p className="mt-6 max-w-xl text-muted">{settings.introduction}</p>
-          <div className="mt-8 flex gap-4">
-            <LinkButton href="/services">Explore Services</LinkButton>
-            <LinkButton href="/contact" variant="ghost">
-              Contact Us
-            </LinkButton>
-          </div>
-        </div>
-      </section>
+    <div className="mx-auto max-w-5xl px-6 py-20 md:py-28">
+      <Reveal>
+        <p className="text-eyebrow text-muted">About Us</p>
+        <h1 className="text-h1 mt-4 font-display">Company Overview</h1>
+        <p className="mt-6 max-w-2xl text-muted">
+          [PLACEHOLDER — company background content will be pulled from the
+          admin panel once connected to the database.]
+        </p>
+      </Reveal>
 
-      {/* Homepage announcement, only shown if one is set */}
-      {settings.announcement && (
-        <section className="border-b border-line bg-line/30">
-          <div className="mx-auto max-w-6xl px-6 py-4 text-sm text-ink">
-            {settings.announcement}
-          </div>
-        </section>
-      )}
-
-      {/* 2 & 3. Introduction + business highlights */}
-      <section className="mx-auto max-w-6xl px-6 py-20">
-        <h2 className="font-display text-2xl">What we do</h2>
-        <div className="mt-10 grid gap-8 md:grid-cols-3">
-          {services.map((service, i) => (
-            <div key={service.id} className="border border-line p-6">
-              <span className="text-sm text-muted">0{i + 1}</span>
-              <h3 className="mt-3 font-display text-lg">{service.title}</h3>
-              <p className="mt-2 text-sm text-muted">{service.description}</p>
+      {/* Timeline-style layout instead of a 2x2 grid */}
+      <div className="mt-20 border-t border-line">
+        {pillars.map((pillar, i) => (
+          <Reveal key={pillar.number} delay={i * 0.05}>
+            <div className="grid gap-2 border-b border-line py-10 md:grid-cols-[100px_180px_1fr] md:items-baseline md:gap-8">
+              <span className="font-display text-sm text-muted">
+                {pillar.number}
+              </span>
+              <h2 className="font-display text-xl">{pillar.title}</h2>
+              <p className="max-w-xl text-sm text-muted">{pillar.body}</p>
             </div>
-          ))}
-        </div>
-      </section>
-
-      {/* 5. Why choose NEIVCE */}
-      <section className="border-t border-line bg-ink text-paper">
-        <div className="mx-auto max-w-6xl px-6 py-20">
-          <h2 className="font-display text-2xl">Why choose NEIVCE</h2>
-          <p className="mt-4 max-w-xl text-paper/70">
-            [PLACEHOLDER — value proposition content to be finalised without
-            fabricated statistics, awards, or client claims.]
-          </p>
-        </div>
-      </section>
-
-      {/* 6. Trust / company info */}
-      <section className="mx-auto max-w-6xl px-6 py-20">
-        <h2 className="font-display text-2xl">Visit or reach us</h2>
-        <p className="mt-4 text-muted">{settings.address}</p>
-        <p className="text-muted">{settings.phone}</p>
-        <div className="mt-6">
-          <LinkButton href="/contact" variant="ghost">
-            Get in touch
-          </LinkButton>
-        </div>
-      </section>
+          </Reveal>
+        ))}
+      </div>
     </div>
   );
 }

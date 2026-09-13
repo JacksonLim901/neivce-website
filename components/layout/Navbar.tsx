@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 
 const links = [
@@ -13,10 +13,29 @@ const links = [
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    function onScroll() {
+      setScrolled(window.scrollY > 8);
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <header className="border-b border-line">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
+    <header
+      className={`sticky top-0 z-50 border-b transition-all duration-200 ${
+        scrolled
+          ? "border-line bg-paper/80 backdrop-blur-md"
+          : "border-transparent bg-transparent"
+      }`}
+    >
+      <div
+        className={`mx-auto flex max-w-6xl items-center justify-between px-6 transition-all duration-200 ${
+          scrolled ? "py-3" : "py-5"
+        }`}
+      >
         <Link
           href="/"
           className="font-display text-lg tracking-tight"
@@ -38,13 +57,13 @@ export function Navbar() {
           ))}
         </nav>
 
-        {/* Mobile menu toggle */}
+        {/* Mobile menu toggle — enlarged tap target for real touchscreens */}
         <button
           type="button"
           className="-m-2 p-2 md:hidden"
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
-          onClick={() => { console.log("menu button clicked"); setOpen((v) => !v); }}
+          onClick={() => setOpen((v) => !v)}
         >
           {open ? <X size={22} /> : <Menu size={22} />}
         </button>
@@ -52,7 +71,7 @@ export function Navbar() {
 
       {/* Mobile nav panel */}
       {open && (
-        <nav className="flex flex-col gap-1 border-t border-line px-6 py-4 text-sm md:hidden">
+        <nav className="flex flex-col gap-1 border-t border-line bg-paper px-6 py-4 text-sm md:hidden">
           {links.map((link) => (
             <Link
               key={link.href}

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { enquirySchema, type EnquiryFormValues } from "@/lib/supabase/validations"
+import { enquirySchema, type EnquiryFormValues } from "@/lib/supabase/validations";
 import { Button } from "@/components/ui/Button";
 
 type Status = "idle" | "submitting" | "success" | "error";
@@ -35,7 +35,7 @@ export function ContactForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="max-w-md space-y-5">
       <div>
-        <label htmlFor="name" className="text-sm">
+        <label htmlFor="name" className="text-eyebrow text-muted">
           Name
         </label>
         <input
@@ -50,7 +50,7 @@ export function ContactForm() {
       </div>
 
       <div>
-        <label htmlFor="email" className="text-sm">
+        <label htmlFor="email" className="text-eyebrow text-muted">
           Email
         </label>
         <input
@@ -65,7 +65,7 @@ export function ContactForm() {
       </div>
 
       <div>
-        <label htmlFor="message" className="text-sm">
+        <label htmlFor="message" className="text-eyebrow text-muted">
           Message
         </label>
         <textarea
