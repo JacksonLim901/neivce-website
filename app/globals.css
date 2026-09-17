@@ -94,3 +94,34 @@ body {
   transform: translateY(-4px);
   border-color: var(--color-accent);
 }
+
+/* Diagonal wash that keeps the hero heading and navbar legible over a
+   photo, while letting the photo show through near the visual on the
+   right — top-left stays opaque, bottom-right fades to reveal the photo. */
+.hero-photo-overlay {
+  background: linear-gradient(
+      to bottom,
+      var(--color-paper) 0%,
+      var(--color-paper) 60px,
+      transparent 140px
+    ),
+    linear-gradient(
+      135deg,
+      var(--color-paper) 0%,
+      var(--color-paper) 42%,
+      rgba(250, 249, 245, 0.55) 65%,
+      rgba(250, 249, 245, 0.15) 100%
+    );
+}
+
+/* Softer edge-fade for standalone content photos (About/Services banners)
+   — blends the photo's edges into the page rather than a hard crop. */
+.image-fade-overlay {
+  background: linear-gradient(
+    to right,
+    var(--color-paper) 0%,
+    transparent 14%,
+    transparent 86%,
+    var(--color-paper) 100%
+  );
+}

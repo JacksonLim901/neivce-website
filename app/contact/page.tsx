@@ -21,11 +21,16 @@ export default async function ContactPage() {
             {settings.address}
           </p>
           <p className="mt-3 text-sm text-muted">{settings.phone}</p>
-
-          {/* Map placeholder — to be replaced with an embedded map */}
-          <div className="mt-8 flex h-56 items-center justify-center border border-line bg-surface text-xs text-muted">
-            Map placeholder
-          </div>
+          <div className="card mt-8 h-64 overflow-hidden">
+  <iframe
+    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3984.4328670399254!2d101.7897472752933!3d2.977289496998815!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31cdcb8b8d2adf13%3A0xc20c0ed01b1bf4a5!2sNew%20Era%20Institute%20of%20Vocational%20%26%20Continuing%20Education!5e0!3m2!1sen!2smy!4v1789530940951!5m2!1sen!2smy"
+    className="h-full w-full grayscale-[20%]"
+    style={{ border: 0 }}
+    loading="lazy"
+    referrerPolicy="no-referrer-when-downgrade"
+    title="NEIVCE Trading PLT location"
+  />
+</div>
         </Reveal>
 
         <Reveal delay={0.1}>

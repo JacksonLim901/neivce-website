@@ -2,6 +2,7 @@ import { LinkButton } from "@/components/ui/Button";
 import { HeroVisual } from "@/components/sections/HeroVisual";
 import { Reveal } from "@/components/ui/Reveal";
 import { getServices, getSiteSettings } from "@/lib/supabase/queries";
+import Image from "next/image";
 
 // Always fetch fresh data so admin edits show up immediately.
 export const dynamic = "force-dynamic";
@@ -14,9 +15,23 @@ export default async function HomePage() {
 
   return (
     <div>
-      {/* Hero — asymmetric left text / right visual */}
-      <section className="bg-dot-grid border-b border-line">
-        <div className="mx-auto grid max-w-7xl items-center gap-12 px-6 py-20 md:grid-cols-2 md:py-32">
+      {/* Hero — asymmetric left text / right visual, with a blurred
+          photo backdrop that bleeds up behind the transparent navbar */}
+      <section className="relative overflow-hidden border-b border-line">
+        <div className="absolute inset-x-0 -top-20 bottom-0">
+          <Image
+            src="/images/hero-bg.jpg"
+            alt=""
+            aria-hidden="true"
+            fill
+            priority
+            className="scale-110 object-cover opacity-70 blur-sm"
+          />
+          <div className="hero-photo-overlay absolute inset-0" />
+          <div className="bg-dot-grid absolute inset-0" />
+        </div>
+
+        <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-6 py-20 md:grid-cols-2 md:py-32">
           <div>
             <p className="text-eyebrow text-muted">{settings.company_name}</p>
             <h1 className="text-display mt-4 font-display">
@@ -33,7 +48,7 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <div className="hidden h-[380px] md:block">
+          <div className="hidden h-[460px] md:block">
             <HeroVisual />
           </div>
         </div>
