@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-import type { Service, SiteSettings } from "@/types";
+import type { Enquiry, Service, SiteSettings } from "@/types";
 
 // Fallback content used only if the database hasn't been seeded yet or the
 // request fails — keeps the site from breaking, and makes it obvious in the
@@ -46,5 +46,20 @@ export async function getServices(): Promise<Service[]> {
     return data as Service[];
   } catch {
     return fallbackServices;
+  }
+}
+
+export async function getEnquiries(): Promise<Enquiry[]> {
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("enquiries")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error || !data) return [];
+    return data as Enquiry[];
+  } catch {
+    return [];
   }
 }

@@ -15,3 +15,11 @@ export type Service = {
   display_order: number;
   updated_at: string;
 };
+
+export type Enquiry = {
+  id: string;
+  name: string;
+  email: string;
+  message: string;
+  created_at: string;
+};

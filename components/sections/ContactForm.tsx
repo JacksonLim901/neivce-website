@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { enquirySchema, type EnquiryFormValues } from "@/lib/supabase/validations";
 import { Button } from "@/components/ui/Button";
+import { createClient } from "@/lib/supabase/client";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
@@ -19,17 +20,22 @@ export function ContactForm() {
     resolver: zodResolver(enquirySchema),
   });
 
-  async function onSubmit() {
+  async function onSubmit(values: EnquiryFormValues) {
     setStatus("submitting");
-    try {
-      // NOTE: no backend endpoint is wired up yet — this is where a
-      // Supabase insert or email API call will go in a later phase.
-      await new Promise((resolve) => setTimeout(resolve, 600));
-      setStatus("success");
-      reset();
-    } catch {
+    const supabase = createClient();
+    const { error } = await supabase.from("enquiries").insert({
+      name: values.name,
+      email: values.email,
+      message: values.message,
+    });
+
+    if (error) {
       setStatus("error");
+      return;
     }
+
+    setStatus("success");
+    reset();
   }
 
   return (

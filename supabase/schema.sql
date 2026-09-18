@@ -76,6 +76,30 @@ create policy "Users can check their own admin_users row"
   on admin_users for select
   using (auth.uid() = id);
 
+-- Contact form submissions. Public can insert (submit the form);
+-- only admin accounts can read them back.
+create table if not exists enquiries (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  email text not null,
+  message text not null,
+  created_at timestamptz not null default now()
+);
+
+alter table enquiries enable row level security;
+
+create policy "Public can submit enquiries"
+  on enquiries for insert
+  with check (true);
+
+create policy "Admins can view enquiries"
+  on enquiries for select
+  using (exists (select 1 from admin_users where admin_users.id = auth.uid()));
+
+create policy "Admins can delete enquiries"
+  on enquiries for delete
+  using (exists (select 1 from admin_users where admin_users.id = auth.uid()));
+
 -- Seed the real company data (edit the placeholder text later from /admin).
 insert into site_settings (company_name, introduction, announcement, phone, address)
 values (

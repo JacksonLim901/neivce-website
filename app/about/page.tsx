@@ -10,17 +10,17 @@ const pillars = [
   {
     number: "02",
     title: "Mission",
-    body: "[PLACEHOLDER — mission statement to be finalised without fabricated claims.]",
+    body: "To make practical technology accessible — helping businesses trade online, building software that solves real problems, and teaching the computer skills people need to use it all with confidence.",
   },
   {
     number: "03",
     title: "Vision",
-    body: "[PLACEHOLDER — vision statement to be finalised without fabricated claims.]",
+    body: "A future where every business we work with, and every person we train, is equipped to use technology on their own terms — capable and no longer dependent on us for the basics.",
   },
   {
     number: "04",
     title: "Values",
-    body: "[PLACEHOLDER — company values to be finalised without fabricated claims.]",
+    body: "Practicality over hype, clarity in how we communicate, and long-term thinking — we build systems and teach skills that hold up well after the project ends.",
   },
 ];
 
